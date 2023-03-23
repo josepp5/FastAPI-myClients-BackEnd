@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from config import Customer #CustomerSchema
-from schemas import CustomerSchema
+from config import Customer, CustomerSchema
+#from schemas import CustomerSchema
 
 def get_customer(db:Session,skip:int=0,limit:int=100):
     return db.query(Customer).offset(skip).limit(limit).all()

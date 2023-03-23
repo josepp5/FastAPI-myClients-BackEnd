@@ -1,6 +1,7 @@
 from typing import List, Optional,Generic,TypeVar
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
+from config import CustomerSchema
 
 T = TypeVar('T')
 
@@ -18,8 +19,9 @@ class CustomerSchema(BaseModel):
     
     class Config:
         orm_mode = True
-        
-        
+       
+
+
 class RequestCustomer(BaseModel):
     parameter: CustomerSchema = Field(...)
     
@@ -29,3 +31,5 @@ class Response (GenericModel,Generic[T]):
     status:str
     message:str
     result:Optional[T]
+        
+        
