@@ -1,34 +1,27 @@
-import select
-from sqlalchemy import Engine, null
+from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 from config import Customer, customerTable
 from schemas import CustomerSchema, RequestCustomer, Response
 
-
 def get_customer(db:Session,skip:int=0,limit:int=100):
     customers: Customer[Customer] = db.query(Customer).offset(skip).limit(limit).all()
-    
     for c in customers:
-        try:
-            c.cus_logo = c.cus_logo.decode('iso-8859-1')
-        except Exception as e:
-            c.cus_logo = "undefined" 
+        decodeLogo(c); 
     return customers
 
-
-def get_customer_by_id(db:Session,customer_id:int, forUpdate:bool):
-    customer = db.query(Customer).filter(Customer.cus_id == customer_id).first()
-    if forUpdate == False:
-        try:
-            customer.cus_logo = customer.cus_logo.decode('iso-8859-1')
-        except Exception as e:
-            customer.cus_logo = "undefined"
-      
+def get_customer_by_id(db:Session,cus_id:int, toUpdate:bool):
+    customer = db.query(Customer).filter(Customer.cus_id == cus_id).first()
+    if toUpdate == False:
+        decodeLogo(customer)
     return customer
 
+def decodeLogo(c:Customer):
+    try:
+        c.cus_logo = c.cus_logo.decode('iso-8859-1')
+    except Exception as e:
+        c.cus_logo = "undefined"
 
-def create_customer(db:Session,customer: CustomerSchema):
-    
+def create_customer(db:Session,customer:CustomerSchema):
     _customer = Customer(
         cus_id=customer.cus_id,
         cus_corporatename=customer.cus_corporatename,
@@ -43,18 +36,17 @@ def create_customer(db:Session,customer: CustomerSchema):
         tas_cus_fk=customer.tas_cus_fk,
         pam_cus_fk=customer.pam_cus_fk,
         )
+    
     db.add(_customer)
     db.commit()
     db.refresh(_customer)
     return _customer
 
-    
-def remove_customer(db:Session, customer_id:int):
-    _customer = get_customer_by_id(db=db, customer_id=customer_id)
+def remove_customer(db:Session, cus_id:int):
+    _customer = get_customer_by_id(db=db, cus_id=cus_id,toUpdate=False)
     db.delete(_customer)
     db.commit()
     
-
 def update_customer(db:Session,
                     cus_id:int,
                     cus_corporatename:int,
@@ -68,8 +60,7 @@ def update_customer(db:Session,
                     cur_cus_fk:int,
                     tas_cus_fk:int,
                     pam_cus_fk:int):
-    customer = get_customer_by_id(db=db,customer_id=cus_id, forUpdate=True)
-    customer.cus_id=cus_id
+    customer = get_customer_by_id(db=db,cus_id=cus_id, toUpdate=True)
     customer.cus_corporatename=cus_corporatename
     customer.cus_commercialname=cus_commercialname
     customer.cus_entity=cus_entity  

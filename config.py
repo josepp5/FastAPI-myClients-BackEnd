@@ -1,6 +1,4 @@
-import select
 from sqlalchemy import create_engine, MetaData, Table
-import sqlalchemy
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.ext.declarative import declarative_base

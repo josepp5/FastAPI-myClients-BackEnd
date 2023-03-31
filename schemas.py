@@ -1,7 +1,8 @@
-from typing import List, Optional,Generic,TypeVar
+from typing import Any, Dict, List, Optional,Generic,TypeVar
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 from sqlalchemy import INTEGER, Column, MetaData, table
+from fastapi.encoders import jsonable_encoder
 from config import Customer
 
 T = TypeVar('T')
