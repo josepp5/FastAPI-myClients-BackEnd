@@ -16,10 +16,12 @@ SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
 ######################################### GENERATES SCHEMAS FROM BBDD TABLE ##########################################
 # Crear un objeto de metadatos
-metadata = MetaData()
+#metadata = MetaData()
 
 # Obtener la tabla de la base de datos
-customerTable = Table('\"CUSTOMER_CUS\"', metadata, autoload_with=engine)
+#customerTable = Table('\"CUSTOMER_CUS\"', metadata, autoload_with=engine)
+
+#countryTable = Table('\"COUNTRY_COU\"', metadata, autoload_with=engine)
 
 
 # Obtener el esquema de la tabla
@@ -35,6 +37,9 @@ Base.prepare(engine, reflect=True, schema='public')
 
 # Acceder a la tabla que quieres convertir en modelo
 Customer = Base.classes.CUSTOMER_CUS
+Country = Base.classes.COUNTRY_COU
+TaxSystem = Base.classes.TAXSYSTEM_TAS
+PaymentMethod = Base.classes.PAYMENTMETHOD_PAM
 
 
 class Settings(BaseSettings):

@@ -12,7 +12,8 @@ class CustomerSchema(BaseModel):
     cus_id:Optional[int]=None
     cus_corporatename:Optional[str]=None
     cus_commercialname:Optional[str]=None
-    cus_entity:Optional[int]=2
+    cca_cus_fk:Optional[int]=None
+    cus_entity:Optional[int]=None
     cus_alias:Optional[str]=None
     cus_unknown:Optional[bool]=None
     cus_country:Optional[str]="ES"
@@ -24,7 +25,15 @@ class CustomerSchema(BaseModel):
     
     class Config:
         orm_mode = True
-       
+
+class CountrySchema(BaseModel):
+    cou_id:Optional[str]=None
+    cou_iso3:Optional[str]=None
+    cou_countryname:Optional[str]=None
+    cou_isocode:Optional[int]=None
+    cou_flag:Optional[str]=None
+
+
 
 class RequestCustomer(BaseModel):
     parameter: CustomerSchema = Field(...)

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean
 
 from config import Base
-
+   
 """
 class Customer(Base):
     #__tablename__ = "\"CUSTOMER_CUS\""
@@ -16,4 +16,4 @@ class Customer(Base):
     cus_entity=Column(Integer)
     cus_taxIDType=Column(String)
     
-    """
+"""

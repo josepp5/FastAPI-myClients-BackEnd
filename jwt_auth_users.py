@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
+from config import Customer, engine
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_DURATION = 30
@@ -51,7 +52,7 @@ users_db = {
     }
 
 async def auth_user(token:str = Depends(oauth2)):
-    
+    print("auth_user() called")
     exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Credenciales de autenticacion invalidas",
@@ -59,12 +60,15 @@ async def auth_user(token:str = Depends(oauth2)):
     
     try:
         username = jwt.decode(token, SECRET, algorithms=[ALGORITHM]).get("sub")
+        print(f"El usuario autenticado es: {username}")
         if username is None:
             raise exception
         
     except JWTError:
         raise exception
     
+    user = search_user(username)
+    print(f"Usuario autenticado correctamente: {user.username}")
     return search_user(username)
     
     
